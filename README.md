@@ -37,9 +37,11 @@ Unlike deterministic quadrature (grid-based integration), the Monte Carlo method
    cd nome-repo
 
 2. Compile the source code:
-  gcc montecarlo_pi.c -o mc_pi -lm
+   '''bash
+   gcc montecarlo_pi.c -o mc_pi -lm
 
 3. Run the simulation:
+   '''bash
    ./mc_pi -lm
 
 ## Mathematical Proof
