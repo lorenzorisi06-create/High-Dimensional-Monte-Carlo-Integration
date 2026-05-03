@@ -44,25 +44,38 @@ Unlike deterministic quadrature (grid-based integration), the Monte Carlo method
    ```bash
    ./mc_pi -lm
 
-## Mathematical Proof
 
-The validity of the Monte Carlo method is rooted in two fundamental pillars of probability theory:
+### 1. Mathematical Foundation: The Strong Law of Large Numbers (SLLN)
 
-### 1. The Law of Large Numbers (LLN)
-Let $X_1, X_2, \dots, X_N$ be independent and identically distributed (i.i.d.) random variables. In our case, $X_i$ is an indicator variable:
-$$X_i = 
+The validity of this Monte Carlo integration is formally grounded in the **Strong Law of Large Numbers**. 
+
+Let $\({X_n\})_{n \in \mathbb{N}}$ be a sequence of independent and identically distributed (i.i.d.) random variables defined on a probability space $(\Omega, \mathcal{F}, P)$. Given that the expected value $E[X] = \mu$ is finite, the empirical mean defined as:
+
+$$\bar{X}_n = \frac{1}{n} \sum_{i=1}^{n} X_i$$
+
+converges to the theoretical expectation **almost surely** ($a.s.$). This is formally stated as:
+
+$$P\left( \lim_{n \to \infty} \bar{X}_n = E[X] \right) = 1$$
+
+#### Application to the PI Estimation
+In this simulation, we define $X_i$ as an indicator variable for each sample $p_i = (x_i, y_i)$ generated uniformly in the domain $D = [-1, 1]^2$:
+
+$$X_i = \mathbb{1}_{C}(p_i) = 
 \begin{cases} 
-1 & \text{if point } p_i \in \text{Circle} \\
+1 & \text{if } x_i^2 + y_i^2 \leq 1 \\
 0 & \text{otherwise}
 \end{cases}$$
-The Strong Law of Large Numbers states that the sample mean $\bar{X}_N$ converges almost surely to the expected value $E[X]$ as $N \to \infty$:
-$$\bar{X}_N = \frac{1}{N} \sum_{i=1}^{N} X_i \xrightarrow{a.s.} E[X] = P(\text{inside})$$
-Since $P(\text{inside}) = \pi/4$, then $4 \cdot \bar{X}_N \to \pi$.
 
-### 2. Central Limit Theorem (CLT) and Error Estimation
+The expectation $E[X]$ corresponds to the ratio of the area of the unit circle $C$ to the area of the square $D$:
+$$E[X] = \frac{\text{Area}(C)}{\text{Area}(D)} = \frac{\pi}{4}$$
+
+As $n \to \infty$, the SLLN guarantees that our simulation's hit ratio will converge to $\pi/4$ with probability 1, allowing us to recover $\pi$ as:
+$$\pi = 4 \cdot \lim_{n \to \infty} \bar{X}_n$$
+
+### 2. Central Limit Theorem (CLT) for Error Estimation
 The CLT provides the distribution of the error. For large $N$, the distribution of the estimate follows a Normal distribution:
-$$\frac{\bar{X}_N - \mu}{\sigma / \sqrt{N}} \xrightarrow{d} \mathcal{N}(0,1)$$
-This implies that the standard deviation of our estimate (the error) scales with:
+$$\frac{\bar{X}_N - E[X]}{\sigma / \sqrt{N}} \xrightarrow \mathcal{N}(0,1)$$
+Now, ${\bar{X}_N - E[X]}$ represents our error, so the theorem suggests that such quantity behaves  with:
 $$\text{Error} \approx \frac{\sigma}{\sqrt{N}}$$
 This confirms that to gain one extra digit of precision (reduce error by 10), we need to increase the number of samples $N$ by a factor of 100.
 
