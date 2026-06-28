@@ -45,7 +45,7 @@ Unlike deterministic quadrature (grid-based integration), the Monte Carlo method
    ./mc_pi -lm
 
 
-### 1. Mathematical Foundation: The Strong Law of Large Numbers (SLLN)
+### Mathematical Foundation: The Strong Law of Large Numbers (SLLN)
 
 The validity of this Monte Carlo integration is formally grounded in the **Strong Law of Large Numbers**. 
 
@@ -72,12 +72,6 @@ $$E[X] = \frac{\text{Area}(C)}{\text{Area}(D)} = \frac{\pi}{4}$$
 As $n \to \infty$, the SLLN guarantees that our simulation's hit ratio will converge to $\pi/4$ with probability 1, allowing us to recover $\pi$ as:
 $$\pi = 4 \cdot \lim_{n \to \infty} \bar{X}_n$$
 
-### 2. Central Limit Theorem (CLT) for Error Estimation
-The CLT provides the distribution of the error. For large $N$, the distribution of the estimate follows a Normal distribution:
-$$\frac{\bar{X}_N - E[X]}{\sigma / \sqrt{N}} \xrightarrow{d} \mathcal{N}(0, 1)$$. \
-Now, ${\bar{X}_N - E[X]}$ represents our error, so the theorem suggests that such quantity behaves  with:
-$$\text{Error} \approx \frac{\sigma}{\sqrt{N}}$$.
-This confirms that to gain one extra digit of precision (reduce error by 10), we need to increase the number of samples $N$ by a factor of 100.
 
 ---
 
